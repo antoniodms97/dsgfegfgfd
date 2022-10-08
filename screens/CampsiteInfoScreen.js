@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import RenderCampsite from '../features/campsites/RenderCampsite';
 import { toggleFavorite } from '../features/favorites/favoritesSlice';
 import { Rating, Input } from 'react-native-elements';
-import { addComment, postComment } from '../features/comments/commentsSlice';
+import { postComment } from '../features/comments/commentsSlice';
 
 
 const CampsiteInfoScreen = ({ route }) => {
@@ -13,9 +13,8 @@ const CampsiteInfoScreen = ({ route }) => {
     const favorites = useSelector((state) => state.favorites);
     const [showModal, setShowModal] = useState(false);
     const [rating, setRating] = useState(5);
-    const [author, setAuthor] = useState("");
-    const [text, setText] = useState("");
-    const [comment, setComment] = useState('');
+    const [author, setAuthor] = useState('');
+    const [text, setText] = useState('');
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
@@ -109,7 +108,7 @@ const CampsiteInfoScreen = ({ route }) => {
                         placeholder='Comment'
                         leftIcon={{ type: 'font-awesome', name: 'comment-o' }}
                         leftIconContainerStyle={{ paddingRight: 10 }}
-                        onChangeText={(comment) => setComment(comment)}
+                        onChangeText={(text) => setText(text)}
                         value={text}
                     />
                     <View style={{ margin: 10 }}>
