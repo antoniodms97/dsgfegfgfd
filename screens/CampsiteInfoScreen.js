@@ -31,8 +31,8 @@ const CampsiteInfoScreen = ({ route }) => {
 
     const resetForm = () => {
         setRating(5);
-        setAuthor(false);
-        setText(false);
+        setAuthor('');
+        setText('');
     };
 
    const renderCommentItem = ({ item }) => {
