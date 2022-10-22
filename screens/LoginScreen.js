@@ -150,7 +150,7 @@ const RegisterTab = () => {
                 if (!capturedImage.cancelled) {
                     console.log(capturedImage);
                     processImage(capturedImage.uri);
-                    MediaLibrary.saveToMediaLivraryAsync(capturedImage.uri);
+                    MediaLibrary.saveToMediaLibraryAsync(capturedImage.uri);
                 }
                 
             }
