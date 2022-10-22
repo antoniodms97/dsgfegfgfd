@@ -6,6 +6,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
 import { baseUrl } from '../shared/baseUrl';
 import logo from '../assets/images/logo.png';
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as MediaLibrary from 'expo-media-library';
 
 const LoginTab = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -110,6 +112,8 @@ const RegisterTab = () => {
     const [remember, setRemember] = useState(false);
     const [imageUrl, setImageUrl] = useState(baseUrl + 'images/logo.png');
 
+    
+
     const handleRegister = () => {
         const userInfo = {
             username,
@@ -145,10 +149,33 @@ const RegisterTab = () => {
                 });
                 if (!capturedImage.cancelled) {
                     console.log(capturedImage);
-                    setImageUrl(capturedImage.uri);
+                    processImage(capturedImage.uri);
+                    MediaLibrary.saveToMediaLivraryAsync(capturedImage.uri);
                 }
+                
             }
 
+    }
+    const getImageFromGallery = async () => {
+        const mediaLibraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (mediaLibraryPermission.status === 'granted'){
+            const capturedImage = await ImagePicker.launchImageLibraryAsync({
+                allowEditing: true,
+                aspect: [1,1]
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                processImage(capturedImage.uri);
+            }
+        }
+    }
+    const processImage = async (imgUri) => {
+        const processedImage = await ImageManipulator.manipulateAsync(imgUri,
+       [{ resize: {width: 400}}],
+       {format: ImageManipulator.SaveFormat.PNG}
+        );
+        setImageUrl(processedImage.uri);
+        console.log(processedImage);
     }
 
     return (
@@ -160,6 +187,7 @@ const RegisterTab = () => {
                         loadingIndicatorSource={logo}
                         style={styles.image}
                     />
+                    <Button title='Gallery' onPress={getImageFromGallery}/>
                     <Button title='Camera' onPress={getImageFromCamera} />
                 </View>
                 <Input
